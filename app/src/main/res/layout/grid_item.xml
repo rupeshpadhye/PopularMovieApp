@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical"
+    android:adjustViewBounds="true"
+    android:scaleType="centerCrop"
+    android:id="@+id/movieImageItem"
+
+    />-->
+<ImageView
+    android:id="@+id/movieImageItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:scaleType="fitXY">
+</ImageView>

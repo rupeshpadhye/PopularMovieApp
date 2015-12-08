@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.android.app.popularmovies.MovieGridFragment">
+    <item
+        android:id="@+id/popularity_sort"
+        android:orderInCategory="100"
+        android:title="@string/popularity_sort"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/highest_rated_sort"
+        android:orderInCategory="101"
+        android:title="@string/highest_rated_sort"
+        app:showAsAction="never" />
+</menu>
