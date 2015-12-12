@@ -2,9 +2,10 @@ package com.example.android.app.popularmovies.fragmetns;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +17,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import com.example.android.app.popularmovies.BuildConfig;
 import com.example.android.app.popularmovies.MovieDetailActivity;
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.adapter.MovieGridViewAdapter;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
 import com.example.android.app.popularmovies.dto.MovieDetails;
-import com.example.android.app.popularmovies.tasks.PopularMovieTask;
+import com.example.android.app.popularmovies.dto.MovieResultsDTO;
+import com.example.android.app.popularmovies.network.RemoteCaller;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,48 +47,43 @@ public class MovieGridFragment extends Fragment {
 
     private static String LOG_TAG = MovieDetailFragment.class.getSimpleName();
     private MovieGridViewAdapter mMovieGridAdapter;
-    private List<MovieDetails> mGridData = new ArrayList<>();
     private SharedPreferences preferences;
+    private TextView textView;
+    private GridView gridView;
+    private ProgressBar progressBar;
 
-    public MovieGridFragment() {
-    }
 
     public void updatePreference(String key, String sortOrder) {
         preferences.edit().clear().putString(key, sortOrder).commit();
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState==null || !savedInstanceState.containsKey("MOVIE_DATA"))
-        {
-            Log.d(LOG_TAG,"savedInstanceState is null"+savedInstanceState);
-
-            mGridData = new ArrayList();
+      /*  if (savedInstanceState == null || !savedInstanceState.containsKey("MOVIE_DATA")) {
+            Log.d(LOG_TAG, "savedInstanceState is null" + savedInstanceState);
+            List<MovieDetails> mGridData=new ArrayList();
             mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
             preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String sortOrder = preferences.getString(PopularMovieConstants.CURRENT_SORT_ORD, getString(R.string.default_sort_key));
             String currentPage = preferences.getString(PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key));
-            PopularMovieTask popularMovieTask = new PopularMovieTask(mMovieGridAdapter);
+            PopularMovieTask  popularMovieTask = new PopularMovieTask();
             popularMovieTask.execute(sortOrder, currentPage);
-        }
-        else {
-            mGridData = savedInstanceState.getParcelableArrayList("MOVIE_DATA");
-            Log.d(LOG_TAG + " Retrieval", "MOVIE_DATA" + mGridData);
+        } else {
+            List<MovieDetails>  mGridData = savedInstanceState.getParcelableArrayList("MOVIE_DATA");
             mMovieGridAdapter.setGridData(mGridData);
-        }
+        }*/
+        setHasOptionsMenu(true);
 
-        /*mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
+        List<MovieDetails> mGridData=new ArrayList();
+        mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = preferences.getString(PopularMovieConstants.CURRENT_SORT_ORD, getString(R.string.default_sort_key));
         String currentPage = preferences.getString(PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key));
-        PopularMovieTask popularMovieTask = new PopularMovieTask(mMovieGridAdapter);
-        popularMovieTask.execute(sortOrder, currentPage);*/
-        setHasOptionsMenu(true);
-
+        updatePreference(PopularMovieConstants.CURRENT_SORT_ORD,sortOrder);
+        PopularMovieTask popularMovieTask = new PopularMovieTask();
+        popularMovieTask.execute(sortOrder, currentPage);
     }
 
     @Override
@@ -99,24 +105,28 @@ public class MovieGridFragment extends Fragment {
         }
 
         updatePreference(PopularMovieConstants.CURRENT_SORT_ORD, sortOrder);
-        PopularMovieTask popularMovieTask = new PopularMovieTask(mMovieGridAdapter);
+        PopularMovieTask popularMovieTask = new PopularMovieTask();
         popularMovieTask.execute(sortOrder
                 , preferences.getString(
                 PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key)));
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-        This method creates new Adpater and passes movie data to next screen
 
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
         View rootView = inflater.inflate(R.layout.movie_grid_fragment, container, false);
-        GridView gridView = (GridView) rootView.findViewById(R.id.movieGridView);
+
+        gridView = (GridView) rootView.findViewById(R.id.movieGridView);
+        textView=(TextView)rootView.findViewById(R.id.status);
+        progressBar=(ProgressBar)rootView.findViewById(R.id.progressBar);
+        gridView.setVisibility(View.VISIBLE);
+        //textView.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+
         gridView.setAdapter(mMovieGridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -137,15 +147,84 @@ public class MovieGridFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(LOG_TAG + " onSaveInstanceState", "MOVIE_DATA" + mGridData);
-        outState.putParcelableArrayList("MOVIE_DATA", (ArrayList<? extends Parcelable>) mGridData);
+        outState.putParcelableArrayList("MOVIE_DATA", (ArrayList<? extends Parcelable>) mMovieGridAdapter.getGridData());
         super.onSaveInstanceState(outState);
     }
 
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.v(LOG_TAG, "onViewStateRestored");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(LOG_TAG, "onResume");
+    }
+
+    private  class PopularMovieTask extends AsyncTask<String, Void, String> {
+
+        private String getPopularMovies(String orderBy, String pageNo) {
+            String result = null;
+            Uri builtUri = Uri.parse(PopularMovieConstants.BASE_URL)
+                    .buildUpon()
+                    .appendPath(PopularMovieConstants.MOVIE_APPENDER)
+                    .appendPath(PopularMovieConstants.DISC_PATH)
+                    .appendPath(PopularMovieConstants.MOVIE_PATH)
+                    .appendQueryParameter(PopularMovieConstants.SORT_PARAM, orderBy)
+                    .appendQueryParameter(PopularMovieConstants.PAGE_NO, pageNo)
+                    .appendQueryParameter(PopularMovieConstants.API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
+                    .build();
+            try {
+                URL url = new URL(builtUri.toString());
+                Log.d(LOG_TAG, builtUri.toString());
+                result = RemoteCaller.doRemoteCall(url, PopularMovieConstants.GET_METHOD);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.e(LOG_TAG, e.getMessage());
+            }
+            return result;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(LOG_TAG,params[0]+" "+params[1]);
+            if (params == null) {
+                return null;
+            }
+            String result = getPopularMovies(params[0], params[1]);
+            return result;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result==null)
+            {
+             /*   progressBar.setVisibility(View.INVISIBLE);
+                gridView.setVisibility(View.INVISIBLE);
+                textView.setText("No internet");
+                textView.setVisibility(View.VISIBLE);
+             */   return;
+            }
+            Log.d(LOG_TAG,result);
+           /* textView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            gridView.setVisibility(View.VISIBLE);*/
+
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-DD").create();
+            MovieResultsDTO resultsDTO = gson.fromJson(result, MovieResultsDTO.class);
+            Log.d(LOG_TAG,resultsDTO.toString());
+            mMovieGridAdapter.setGridData(resultsDTO.getResults());
+            textView.setVisibility(View.GONE);
+        }
+    }
 
 }
+
+
 //--------------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------------

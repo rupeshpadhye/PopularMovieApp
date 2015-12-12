@@ -17,6 +17,7 @@ public final class RemoteCaller {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String result=null;
+
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(requestMethod);

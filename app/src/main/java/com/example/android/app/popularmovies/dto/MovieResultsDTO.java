@@ -1,13 +1,13 @@
 package com.example.android.app.popularmovies.dto;
-
+//--------------------------------------------------------------------------------------------------
 import java.io.Serializable;
 import java.util.List;
-
 import lombok.Data;
-
+//--------------------------------------------------------------------------------------------------
 /**
- * Created by RUPESH on 12/2/2015.
+ *  @Author Rupesh Padhye
  */
+//--------------------------------------------------------------------------------------------------
 @Data
 public class MovieResultsDTO implements Serializable {
 
@@ -17,3 +17,6 @@ public class MovieResultsDTO implements Serializable {
     private List<MovieDetails> results;
 
 }
+//--------------------------------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------------------------------

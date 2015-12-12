@@ -1,14 +1,15 @@
 package com.example.android.app.popularmovies.dto;
-
+//--------------------------------------------------------------------------------------------------
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import lombok.Data;
-
+//--------------------------------------------------------------------------------------------------
+/**
+ *  @Author Rupesh Padhye
+ */
+//--------------------------------------------------------------------------------------------------
 @Data
 public class MovieDetails implements Parcelable {
 
@@ -19,6 +20,7 @@ public class MovieDetails implements Parcelable {
     private String original_language;
     private String original_title;
     private String overview;
+
     private Date release_date;
     private String poster_path;
     private double popularity;
@@ -27,11 +29,8 @@ public class MovieDetails implements Parcelable {
     private float vote_average;
     private int vote_count;
 
-    public MovieDetails() {
-
-    }
-
     private MovieDetails(Parcel parcel) {
+        super();
         adult = (boolean) parcel.readValue(null);
         backdrop_path=parcel.readString();
         genre_ids=parcel.readArrayList(null);
@@ -43,7 +42,7 @@ public class MovieDetails implements Parcelable {
         poster_path=parcel.readString();
         popularity=parcel.readDouble();
         title=parcel.readString();
-      //  video=(boolean)parcel.readValue(null);
+        video=(boolean)parcel.readValue(null);
         vote_average=parcel.readFloat();
         vote_count=parcel.readInt();
     }
@@ -66,12 +65,11 @@ public class MovieDetails implements Parcelable {
         out.writeString(poster_path);
         out.writeDouble(popularity);
         out.writeString(title);
-        //out.writeValue(video);
+        out.writeValue(video);
         out.writeFloat(vote_average);
         out.writeInt(vote_count);
 
     }
-
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public MovieDetails createFromParcel(Parcel in) {
@@ -84,3 +82,6 @@ public class MovieDetails implements Parcelable {
     };
 
 }
+//--------------------------------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------------------------------

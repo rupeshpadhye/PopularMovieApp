@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
      tools:showIn="@layout/activity_main"
@@ -21,11 +21,39 @@
         />-->
     <GridView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="150dp"
-        android:numColumns="auto_fit"
+        android:layout_height="match_parent"
+        android:columnWidth="@dimen/grid_column_width"
+        android:numColumns="2"
         android:id="@+id/movieGridView"
+        android:visibility="visible"
+
         />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Loading"
+        android:id="@+id/status"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/status_margin_bottom"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_25dp"
+        android:visibility="gone"
+        />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_above="@+id/status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/progress_margin_bottom"
+        android:indeterminate="false"
+        android:visibility="gone"
+        />
+</RelativeLayout>
 

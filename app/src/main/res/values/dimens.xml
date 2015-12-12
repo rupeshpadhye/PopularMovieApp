@@ -3,4 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <!--Popular movie Dimensions-->
+    <dimen name="grid_column_width">150dp</dimen>
+    <dimen name="status_margin_bottom">162dp</dimen>
+    <dimen name="text_25dp">25dp</dimen>
+    <dimen name="progress_margin_bottom">102dp</dimen>
 </resources>

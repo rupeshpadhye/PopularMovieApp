@@ -1,3 +1,4 @@
+/*
 package com.example.android.app.popularmovies.tasks;
 
 
@@ -18,11 +19,13 @@ import com.google.gson.GsonBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+*/
 /**
  * PopularMovieTask endpoint calls most popular movies by order and page
  *
  * @Author Rupesh Padhye
- */
+ *//*
+
 public class PopularMovieTask extends AsyncTask<String, Void, String> {
 
     private ArrayAdapter<MovieDetails> adapter;
@@ -75,3 +78,4 @@ public class PopularMovieTask extends AsyncTask<String, Void, String> {
 }
 
 
+*/
