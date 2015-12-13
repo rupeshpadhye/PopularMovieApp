@@ -23,10 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="@dimen/grid_column_width"
-        android:numColumns="2"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:stretchMode="columnWidth"
         android:id="@+id/movieGridView"
-        android:visibility="visible"
-
+        android:visibility="invisible"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="0dp"
+        android:fillViewport="true"
         />
 
     <TextView
@@ -41,7 +45,7 @@
         android:layout_marginBottom="@dimen/status_margin_bottom"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_25dp"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <ProgressBar
@@ -53,7 +57,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/progress_margin_bottom"
         android:indeterminate="false"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 </RelativeLayout>
 

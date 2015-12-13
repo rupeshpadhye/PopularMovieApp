@@ -2,6 +2,8 @@ package com.example.android.app.popularmovies.dto;
 //--------------------------------------------------------------------------------------------------
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
@@ -20,8 +22,8 @@ public class MovieDetails implements Parcelable {
     private String original_language;
     private String original_title;
     private String overview;
-
-    private Date release_date;
+   // private Date release_date;
+    private String release_date;
     private String poster_path;
     private double popularity;
     private String title;
@@ -38,7 +40,8 @@ public class MovieDetails implements Parcelable {
         original_language=parcel.readString();
         original_title=parcel.readString();
         overview=parcel.readString();
-        release_date=new Date(parcel.readLong());
+        release_date=parcel.readString();
+        //release_date=new Date(parcel.readLong());
         poster_path=parcel.readString();
         popularity=parcel.readDouble();
         title=parcel.readString();
@@ -61,7 +64,8 @@ public class MovieDetails implements Parcelable {
         out.writeString(original_language);
         out.writeString(original_title);
         out.writeString(overview);
-        out.writeLong(release_date.getTime());
+        out.writeString(release_date);
+        //out.writeLong(release_date.getTime());
         out.writeString(poster_path);
         out.writeDouble(popularity);
         out.writeString(title);

@@ -65,9 +65,10 @@ public final class MovieGridViewAdapter extends ArrayAdapter<MovieDetails> {
         }
 
         MovieDetails item = mGridData.get(position);
-        //String imagePath=PopularMovieConstants.IMG_URL_W185+item.getPoster_path();
+
         if(item.getPoster_path()!=null) {
-            String imagePath = "http://image.tmdb.org/t/p/w185" + item.getPoster_path();
+            //String imagePath = "http://image.tmdb.org/t/p/w185" + item.getPoster_path();
+            String imagePath=PopularMovieConstants.IMG_URL_W185+ item.getPoster_path();
             Log.d(LOG_TAG, imagePath);
             Picasso.with(mContext).load(imagePath).into(holder.imageView);
         }
