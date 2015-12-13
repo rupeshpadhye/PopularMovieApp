@@ -40,7 +40,12 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView Started");
+      boolean dualPane= getResources().getBoolean(R.bool.dual_pane);
         View rootView = inflater.inflate(R.layout.movie_detail_fragment, container, false);
+        if (dualPane)
+        {
+            rootView.setVisibility(View.INVISIBLE);
+        }
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
             MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
@@ -66,8 +71,8 @@ public class MovieDetailFragment extends Fragment {
     }
 
     public void updateView(MovieDetails movieDetails) {
-
         Log.d(LOG_TAG, movieDetails.toString());
+        getView().setVisibility(View.VISIBLE);
         ((TextView) getView().findViewById(R.id.movieTitle)).setText(
                 movieDetails.getOriginal_title());
         ((TextView) getView().findViewById(R.id.rating)).setText(

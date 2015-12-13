@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         setSupportActionBar(toolbar);
         mTwoPane = getResources().getBoolean(R.bool.dual_pane);
         if(mTwoPane) {
-            if (savedInstanceState == null) {
+           if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.movie_detail_activity, new MovieDetailFragment())
                         .commit();
