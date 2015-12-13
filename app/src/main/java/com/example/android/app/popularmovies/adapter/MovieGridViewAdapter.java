@@ -1,7 +1,9 @@
 package com.example.android.app.popularmovies.adapter;
 //--------------------------------------------------------------------------------------------------
+
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,13 @@ import android.widget.LinearLayout;
 
 import java.util.Collections;
 import java.util.List;
+
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
 import com.example.android.app.popularmovies.dto.MovieDetails;
 import com.squareup.picasso.Picasso;
 //--------------------------------------------------------------------------------------------------
+
 /**
  * MovieGridViewAdapter @extends ArrayAdapter
  *
@@ -32,7 +36,7 @@ public final class MovieGridViewAdapter extends ArrayAdapter<MovieDetails> {
     private int layoutResourceId;
     private List<MovieDetails> mGridData;
 
-    public MovieGridViewAdapter(Context mContext,int layoutResourceId,List<MovieDetails> mGridData){
+    public MovieGridViewAdapter(Context mContext, int layoutResourceId, List<MovieDetails> mGridData) {
         super(mContext, layoutResourceId, mGridData);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -40,7 +44,7 @@ public final class MovieGridViewAdapter extends ArrayAdapter<MovieDetails> {
     }
 
     public List<MovieDetails> getGridData() {
-        return  mGridData;
+        return mGridData;
     }
 
     public void setGridData(List<MovieDetails> mGridData) {
@@ -66,11 +70,11 @@ public final class MovieGridViewAdapter extends ArrayAdapter<MovieDetails> {
 
         MovieDetails item = mGridData.get(position);
 
-        if(item.getPoster_path()!=null) {
-            //String imagePath = "http://image.tmdb.org/t/p/w185" + item.getPoster_path();
-            String imagePath=PopularMovieConstants.IMG_URL_W185+ item.getPoster_path();
-            Log.d(LOG_TAG, imagePath);
+        if (item.getPoster_path() != null) {
+            String imagePath = PopularMovieConstants.IMG_URL_W185 + item.getPoster_path();
             Picasso.with(mContext).load(imagePath).into(holder.imageView);
+        } else {
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.no_image));
         }
 
         return row;

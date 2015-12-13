@@ -34,6 +34,11 @@ public final class PopularMovieConstants {
 
     public static final String NO_INTERNET="No Internet";
 
+    public static final String POPULARITY_DESC="popularity.desc";
+
+    public static final String VOTE_AVG_DESC="vote_average.desc";
+
+
 }
 //--------------------------------------------------------------------------------------------------
 //

@@ -4,21 +4,6 @@
      tools:showIn="@layout/activity_main"
     tools:context="com.example.android.app.popularmovies.fragmetns.MovieGridFragment">
 
-  <!--  <GridView
-        android:id="@+id/movieGridView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:drawSelectorOnTop="true"
-        android:gravity="center"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:focusable="false"
-        android:clickable="true"
-        android:focusableInTouchMode="false"
-        android:horizontalSpacing="0dp"
-        android:verticalSpacing="0dp"
-        android:fillViewport="true"
-        />-->
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
