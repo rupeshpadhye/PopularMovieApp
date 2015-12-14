@@ -38,6 +38,8 @@ public final class PopularMovieConstants {
 
     public static final String VOTE_AVG_DESC="vote_average.desc";
 
+    public static final String SCROLL_POSITION="SCROLL_POSITION";
+
 
 }
 //--------------------------------------------------------------------------------------------------

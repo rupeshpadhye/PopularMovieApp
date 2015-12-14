@@ -45,13 +45,14 @@ import java.util.List;
 //--------------------------------------------------------------------------------------------------
 public class MovieGridFragment extends Fragment {
 
-    private static String LOG_TAG = MovieDetailFragment.class.getSimpleName();
+    private static String LOG_TAG = MovieGridFragment.class.getSimpleName();
     private MovieGridViewAdapter mMovieGridAdapter;
     private SharedPreferences mPreferences;
     private TextView mTextView;
     private GridView mGridView;
     private ProgressBar mProgressBar;
     private onMovieSelectedListener mMovieClickListener;
+    private int mPosition = GridView.INVALID_POSITION;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,16 +60,18 @@ public class MovieGridFragment extends Fragment {
         List<MovieDetails> mGridData = new ArrayList();
         mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (savedInstanceState == null||!savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA))
-            {
+        if (savedInstanceState == null||!savedInstanceState.containsKey("MOVIE_DATA")) {
+            Log.d(LOG_TAG,"savedInstanceState is null"+savedInstanceState);
             String sortOrder = mPreferences.getString(PopularMovieConstants.CURRENT_SORT_ORD, getString(R.string.default_sort_key));
             String currentPage = mPreferences.getString(PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key));
             PopularMovieTask popularMovieTask = new PopularMovieTask();
             popularMovieTask.execute(sortOrder, currentPage);
         } else {
-            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
+            Log.d(LOG_TAG,"savedInstanceState is not null");
+            mGridData = savedInstanceState.getParcelableArrayList("MOVIE_DATA");
             mMovieGridAdapter.setGridData(mGridData);
         }
+
         setHasOptionsMenu(true);
 
     }
@@ -118,8 +121,7 @@ public class MovieGridFragment extends Fragment {
         mTextView = (TextView) rootView.findViewById(R.id.status);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mGridView.setAdapter(mMovieGridAdapter);
-        if (savedInstanceState != null
-           &&  savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
+        if (savedInstanceState != null &&  savedInstanceState.containsKey("MOVIE_DATA")) {
             mTextView.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.GONE);
             mGridView.setVisibility(View.VISIBLE);
@@ -130,19 +132,33 @@ public class MovieGridFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieDetails movieDetails = mMovieGridAdapter.getItem(position);
                 mMovieClickListener.onMovieSelected(movieDetails);
-                /*Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
-                        .putExtra(PopularMovieConstants.MOVIE_DATA, movieDetails);
-                startActivity(intent);*/
+                mPosition = position;
+                Log.d(LOG_TAG,"new pos"+mPosition);
             }
         });
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.SCROLL_POSITION)) {
+            Log.d(LOG_TAG,"Get saved post"+mPosition);
+            mPosition = savedInstanceState.getInt(PopularMovieConstants.SCROLL_POSITION);
+        }
+
+        if (mPosition != GridView.INVALID_POSITION) {
+            Log.d(LOG_TAG,"retrieved"+mPosition);
+            mGridView.smoothScrollToPosition(mPosition);
+        }
         return rootView;
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(PopularMovieConstants.MOVIE_DATA
+
+        outState.putParcelableArrayList("MOVIE_DATA"
                 , (ArrayList<? extends Parcelable>) mMovieGridAdapter.getGridData());
+
+        if (mPosition != GridView.INVALID_POSITION) {
+            outState.putInt(PopularMovieConstants.SCROLL_POSITION, mPosition);
+        }
         super.onSaveInstanceState(outState);
     }
 
