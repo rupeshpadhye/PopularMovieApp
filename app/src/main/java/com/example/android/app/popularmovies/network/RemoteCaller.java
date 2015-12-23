@@ -1,16 +1,18 @@
+//--------------------------------------------------------------------------------------------------
 package com.example.android.app.popularmovies.network;
-
+//--------------------------------------------------------------------------------------------------
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+//--------------------------------------------------------------------------------------------------
 /**
  * This class is helper class to do remote API calls
  * @Author Rupesh Padhye
  */
+//--------------------------------------------------------------------------------------------------
 public final class RemoteCaller {
 
     public static String doRemoteCall(URL url,String requestMethod) {
@@ -22,7 +24,6 @@ public final class RemoteCaller {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(requestMethod);
             urlConnection.connect();
-
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
@@ -55,4 +56,6 @@ public final class RemoteCaller {
         return result;
     }
 }
-
+//--------------------------------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------------------------------

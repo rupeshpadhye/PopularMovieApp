@@ -1,15 +1,13 @@
 package com.example.android.app.popularmovies.fragmetns;
 //--------------------------------------------------------------------------------------------------
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +20,6 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.android.app.popularmovies.BuildConfig;
-import com.example.android.app.popularmovies.MovieDetailActivity;
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.adapter.MovieGridViewAdapter;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
@@ -35,7 +32,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 //--------------------------------------------------------------------------------------------------
 
 /**
@@ -60,15 +56,18 @@ public class MovieGridFragment extends Fragment {
         List<MovieDetails> mGridData = new ArrayList();
         mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (savedInstanceState == null||!savedInstanceState.containsKey("MOVIE_DATA")) {
-            Log.d(LOG_TAG,"savedInstanceState is null"+savedInstanceState);
-            String sortOrder = mPreferences.getString(PopularMovieConstants.CURRENT_SORT_ORD, getString(R.string.default_sort_key));
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)){
+            Log.d(LOG_TAG, "savedInstanceState is null" + savedInstanceState);
+            String sortOrder = mPreferences.getString(PopularMovieConstants.CURRENT_SORT_ORD
+                                                    , getString(R.string.default_sort_key));
             String currentPage = mPreferences.getString(PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key));
             PopularMovieTask popularMovieTask = new PopularMovieTask();
             popularMovieTask.execute(sortOrder, currentPage);
-        } else {
-            Log.d(LOG_TAG,"savedInstanceState is not null");
-            mGridData = savedInstanceState.getParcelableArrayList("MOVIE_DATA");
+        }
+        else {
+            Log.d(LOG_TAG, "savedInstanceState is not null");
+            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
             mMovieGridAdapter.setGridData(mGridData);
         }
 
@@ -104,10 +103,9 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof onMovieSelectedListener){
-            mMovieClickListener=(onMovieSelectedListener) context;
-        }
-        else {
+        if (context instanceof onMovieSelectedListener) {
+            mMovieClickListener = (onMovieSelectedListener) context;
+        } else {
             throw new ClassCastException("not instance of onMovieSelectedListener");
         }
     }
@@ -121,7 +119,7 @@ public class MovieGridFragment extends Fragment {
         mTextView = (TextView) rootView.findViewById(R.id.status);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mGridView.setAdapter(mMovieGridAdapter);
-        if (savedInstanceState != null &&  savedInstanceState.containsKey("MOVIE_DATA")) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
             mTextView.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.GONE);
             mGridView.setVisibility(View.VISIBLE);
@@ -131,19 +129,20 @@ public class MovieGridFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieDetails movieDetails = mMovieGridAdapter.getItem(position);
-                mMovieClickListener.onMovieSelected(movieDetails);
                 mPosition = position;
-                Log.d(LOG_TAG,"new pos"+mPosition);
+                Log.d(LOG_TAG,"new "+mPosition);
+                mMovieClickListener.onMovieSelected(movieDetails);
+
             }
         });
 
         if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.SCROLL_POSITION)) {
-            Log.d(LOG_TAG,"Get saved post"+mPosition);
+            Log.d(LOG_TAG, "retrieved" + mPosition);
             mPosition = savedInstanceState.getInt(PopularMovieConstants.SCROLL_POSITION);
         }
 
         if (mPosition != GridView.INVALID_POSITION) {
-            Log.d(LOG_TAG,"retrieved"+mPosition);
+            Log.d(LOG_TAG, "set" + mPosition);
             mGridView.smoothScrollToPosition(mPosition);
         }
         return rootView;
@@ -153,12 +152,10 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList("MOVIE_DATA"
+        outState.putParcelableArrayList(PopularMovieConstants.MOVIE_DATA
                 , (ArrayList<? extends Parcelable>) mMovieGridAdapter.getGridData());
+        outState.putInt(PopularMovieConstants.SCROLL_POSITION, mPosition);
 
-        if (mPosition != GridView.INVALID_POSITION) {
-            outState.putInt(PopularMovieConstants.SCROLL_POSITION, mPosition);
-        }
         super.onSaveInstanceState(outState);
     }
 
@@ -233,14 +230,12 @@ public class MovieGridFragment extends Fragment {
         }
     }
 
-   public interface onMovieSelectedListener {
+    public interface onMovieSelectedListener {
         public void onMovieSelected(MovieDetails movieDetails);
 
     }
 
 }
-
-
 //--------------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------------

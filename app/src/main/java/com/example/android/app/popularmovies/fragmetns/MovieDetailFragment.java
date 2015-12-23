@@ -1,3 +1,4 @@
+//--------------------------------------------------------------------------------------------------
 package com.example.android.app.popularmovies.fragmetns;
 //--------------------------------------------------------------------------------------------------
 
@@ -30,6 +31,7 @@ public class MovieDetailFragment extends Fragment {
 
     public MovieDetailFragment() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,6 @@ public class MovieDetailFragment extends Fragment {
     }
 
 }
-
 //--------------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------------

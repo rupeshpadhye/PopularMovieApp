@@ -17,9 +17,7 @@ import com.example.android.app.popularmovies.fragmetns.MovieGridFragment;
  */
 //--------------------------------------------------------------------------------------------------
 public class MainActivity extends AppCompatActivity implements MovieGridFragment.onMovieSelectedListener {
-
     private boolean mTwoPane;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +34,13 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         }
         else {
             if (savedInstanceState == null) {
+                Log.d("RUPESH","MainActivity savedInstanceState is  null");
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment, new MovieGridFragment())
                         .commit();
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,16 +54,14 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onMovieSelected(MovieDetails movieDetails) {
-        if(mTwoPane) {
+        if(mTwoPane){
             MovieDetailFragment fragment = (MovieDetailFragment)getSupportFragmentManager().
                                         findFragmentById(R.id.movie_detail_activity);
             if(fragment!=null) {
                 fragment.updateView(movieDetails);
             }
-
         }
         else {
             Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class)
