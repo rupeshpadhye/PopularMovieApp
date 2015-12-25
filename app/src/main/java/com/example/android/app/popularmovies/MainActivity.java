@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         }
         else {
             if (savedInstanceState == null) {
-                Log.d("RUPESH","MainActivity savedInstanceState is  null");
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment, new MovieGridFragment())
                         .commit();
