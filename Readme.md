@@ -13,4 +13,8 @@ buildTypes.all { variant ->
 Screen Shots
 -----------
 
-![Mobile](documents/mobile.png)
+![Mobile](documents/mobile.PNG)
+
+![Movie Detail](documents/movie_detail.PNG)
+
+![Tablet](documents/tablet.PNG)
