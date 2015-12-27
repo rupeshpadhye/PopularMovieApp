@@ -73,7 +73,7 @@ public class PopularMovieTask extends AsyncTask<String, Void, String> {
        // Log.d(LOG_TAG + " onPostExecute-> ", result);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-DD").create();
         resultsDTO = gson.fromJson(result, MovieResultsDTO.class);
-        ((MovieGridViewAdapter) adapter).setGridData(resultsDTO.getResults());
+        ((MovieGridViewAdapter) adapter).setListData(resultsDTO.getResults());
     }
 }
 

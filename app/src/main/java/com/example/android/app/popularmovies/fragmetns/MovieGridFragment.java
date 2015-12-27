@@ -49,11 +49,12 @@ public class MovieGridFragment extends Fragment {
     private ProgressBar mProgressBar;
     private onMovieSelectedListener mMovieClickListener;
     private int mPosition = GridView.INVALID_POSITION;
+    List<MovieDetails> mGridData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<MovieDetails> mGridData = new ArrayList();
+        mGridData= new ArrayList();
         mMovieGridAdapter = new MovieGridViewAdapter(getActivity(), R.layout.grid_item, mGridData);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -130,7 +131,7 @@ public class MovieGridFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieDetails movieDetails = mMovieGridAdapter.getItem(position);
                 mPosition = position;
-                Log.d(LOG_TAG,"new "+mPosition);
+                Log.d(LOG_TAG, "new " + mPosition);
                 mMovieClickListener.onMovieSelected(movieDetails);
 
             }
@@ -142,7 +143,6 @@ public class MovieGridFragment extends Fragment {
         }
 
         if (mPosition != GridView.INVALID_POSITION) {
-            Log.d(LOG_TAG, "set" + mPosition);
             mGridView.smoothScrollToPosition(mPosition);
         }
         return rootView;
@@ -163,6 +163,9 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState!=null && savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
+            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
+        }
     }
 
 

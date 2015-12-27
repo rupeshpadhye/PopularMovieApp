@@ -4,8 +4,10 @@ package com.example.android.app.popularmovies.fragmetns;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ public class MovieDetailFragment extends Fragment {
 
     private static String LOG_TAG = MovieDetailFragment.class.getSimpleName();
 
+
     public MovieDetailFragment() {
     }
 
@@ -36,7 +39,6 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

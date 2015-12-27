@@ -40,7 +40,11 @@ public final class PopularMovieConstants {
 
     public static final String SCROLL_POSITION="SCROLL_POSITION";
 
+    public static final String REVIEWS = "reviews";
 
+    public static final String VIDEOS ="videos" ;
+
+    public static final String REVIEW_DATA ="REVIEW_DATA" ;
 }
 //--------------------------------------------------------------------------------------------------
 //

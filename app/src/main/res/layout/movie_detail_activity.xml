@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/movie_detail_activity"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="com.example.android.app.popularmovies.MovieDetailActivity" tools:ignore="MergeRootFrame" />
+    tools:context="com.example.android.app.popularmovies.MovieDetailActivity" tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+    </LinearLayout>
+
+    </FrameLayout>
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="#FFFAFA"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/videoImage"
+                    android:layout_width="120dp"
+                    android:layout_height="90dp"
+                    android:minHeight="?android:attr/listPreferredItemHeight"
+                    android:scaleType="fitXY"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_media_play"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:tint="@color/colorTitle"/>
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/trailername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rupesh"
+                android:paddingLeft="10dp"
+                android:layout_weight="2"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

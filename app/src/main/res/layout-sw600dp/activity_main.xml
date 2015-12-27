@@ -41,12 +41,31 @@
             android:layout_weight="2"
             tools:layout="@layout/movie_grid_fragment" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            >
         <FrameLayout
             android:id="@+id/movie_detail_activity"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
+            <FrameLayout
+                android:id="@+id/movie_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+          <!--  <FrameLayout
+                android:id="@+id/movie_trailer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+-->
+        </LinearLayout>
     </LinearLayout>
   </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
