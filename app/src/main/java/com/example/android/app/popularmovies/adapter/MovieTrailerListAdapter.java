@@ -34,6 +34,10 @@ public class MovieTrailerListAdapter extends RecyclerView.Adapter<MovieTrailerLi
         return mMovieReviewArrayList.get(pos);
     }
 
+    public List<MovieTrailer> getGridData() {
+        return mMovieReviewArrayList;
+    }
+
 
     public static class DataObjectHolder
             extends     RecyclerView.ViewHolder

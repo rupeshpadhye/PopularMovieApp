@@ -12,14 +12,14 @@ import lombok.Data;
  */
 
 @Data
-public class MovieReview implements Serializable {
+public class MovieReview implements Parcelable {
     private String id;
     private  String author;
     private  String content;
 
-/*    public MovieReview(Parcel parcel)
-    {
-        super();
+    public  MovieReview()
+    {}
+    public MovieReview(Parcel parcel) {
         id=parcel.readString();
         author=parcel.readString();
         content=parcel.readString();
@@ -45,7 +45,7 @@ public class MovieReview implements Serializable {
         public MovieReview[] newArray(int size) {
             return new MovieReview[size];
         }
-    };*/
+    };
 
 }
 

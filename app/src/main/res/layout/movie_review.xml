@@ -1,63 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.android.app.popularmovies.fragmetns.MovieReviewFragment"
-    tools:showIn="@layout/activity_detail">
+    tools:showIn="@layout/activity_detail"
+    >
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/MovieReviewView"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
-    <ProgressBar
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/reviewProgessBar"
-        android:layout_gravity="center_horizontal"
-        />
+        android:layout_gravity="center"
+        card_view:cardBackgroundColor="#FFFAFA"
+        android:layout_margin="0dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="10dp">
 
-    <!--   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
-           <View style="@style/Divider" />
-           <TextView
-               android:id="@+id/reviewLbl"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:background="@color/colorTitle"
-               android:gravity="left"
-               android:text="@string/reviews"
-               android:textAppearance="?android:attr/textAppearanceMedium"
-               android:textStyle="bold" />
+            <TextView
+                android:id="@+id/reviewLbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
 
-           <View style="@style/Divider" />
-           <ProgressBar
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/reviewProgessBar"
-               android:layout_gravity="center_horizontal"
+            <View style="@style/Divider"
                 />
 
-           <TextView
-               android:id="@+id/author"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               />
-
-           <TextView
-               android:id="@+id/content"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reviewProgessBar"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible"
+                android:backgroundTint="@color/black"
                 />
-           <View style="@style/Divider" />
 
-       </LinearLayout>-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/MovieReviewView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+
+        </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>
 </FrameLayout>

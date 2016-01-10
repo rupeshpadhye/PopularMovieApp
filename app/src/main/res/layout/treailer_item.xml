@@ -46,7 +46,6 @@
                 android:id="@+id/trailername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rupesh"
                 android:paddingLeft="10dp"
                 android:layout_weight="2"
                 android:textStyle="bold"

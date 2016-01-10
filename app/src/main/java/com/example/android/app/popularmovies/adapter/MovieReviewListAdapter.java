@@ -19,6 +19,10 @@ public class MovieReviewListAdapter extends RecyclerView.Adapter<MovieReviewList
         mMovieReviewArrayList = movieReviewArrayList;
     }
 
+    public List<MovieReview> getGridData() {
+        return mMovieReviewArrayList;
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView author;
         TextView content;

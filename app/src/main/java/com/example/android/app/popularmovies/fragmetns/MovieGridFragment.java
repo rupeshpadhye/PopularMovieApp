@@ -19,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.android.app.popularmovies.BuildConfig;
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.adapter.MovieGridViewAdapter;
@@ -91,6 +93,9 @@ public class MovieGridFragment extends Fragment {
             case R.id.highest_rated_sort:
                 sortOrder = PopularMovieConstants.VOTE_AVG_DESC;
                 break;
+            case R.id.fav_movies_id:
+                Toast.makeText(getContext(),"Show Fav",Toast.LENGTH_SHORT);
+                break;
         }
 
         updatePreference(PopularMovieConstants.CURRENT_SORT_ORD, sortOrder);
@@ -160,13 +165,13 @@ public class MovieGridFragment extends Fragment {
     }
 
 
-    @Override
+    /*@Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState!=null && savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
             mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
         }
-    }
+    }*/
 
 
     public void updatePreference(String key, String sortOrder) {

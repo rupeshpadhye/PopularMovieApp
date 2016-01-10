@@ -3,6 +3,8 @@ package com.example.android.app.popularmovies.fragmetns;
 //--------------------------------------------------------------------------------------------------
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
@@ -29,6 +33,8 @@ import java.util.Calendar;
 //--------------------------------------------------------------------------------------------------
 public class MovieDetailFragment extends Fragment {
 
+    private ImageButton favButton;
+
     private static String LOG_TAG = MovieDetailFragment.class.getSimpleName();
 
 
@@ -42,17 +48,16 @@ public class MovieDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView Started");
-      boolean dualPane= getResources().getBoolean(R.bool.dual_pane);
+        boolean dualPane = getResources().getBoolean(R.bool.dual_pane);
         View rootView = inflater.inflate(R.layout.movie_detail_fragment, container, false);
-        if (dualPane)
-        {
+       /* if (dualPane) {
             rootView.setVisibility(View.INVISIBLE);
-        }
+        }*/
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
-            MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
+           final MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
             Log.d(LOG_TAG, movieDetails.toString());
             ((TextView) rootView.findViewById(R.id.movieTitle)).setText(
                     movieDetails.getOriginal_title());
@@ -69,9 +74,30 @@ public class MovieDetailFragment extends Fragment {
 
             }
 
-        }
+            favButton = (ImageButton) rootView.findViewById(R.id.favButton);
+            favButton.setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) {
+
+                    Drawable drawable;
+                    if(isFavMovie(movieDetails)) {
+
+                        drawable= ContextCompat.getDrawable(getContext(), android.R.drawable.star_on);
+                    }
+                    else{
+                        drawable= ContextCompat.getDrawable(getContext(), android.R.drawable.star_off);
+                    }
+                    favButton.setImageDrawable(drawable);
+                }
+            });
+        }
         return rootView;
+    }
+
+    public boolean isFavMovie(MovieDetails movieDetails)
+    {
+        return false;
     }
 
     public void updateView(MovieDetails movieDetails) {
@@ -90,8 +116,7 @@ public class MovieDetailFragment extends Fragment {
                     .load(PopularMovieConstants.IMG_URL_W185 + movieDetails.getPoster_path())
                     .into(((ImageView) getView().findViewById(R.id.imageView)));
 
-        }
-        else {
+        } else {
             ((ImageView) getView().findViewById(R.id.imageView))
                     .setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.no_image));
         }

@@ -12,6 +12,7 @@ import com.example.android.app.popularmovies.dto.MovieDetails;
 import com.example.android.app.popularmovies.fragmetns.MovieDetailFragment;
 import com.example.android.app.popularmovies.fragmetns.MovieGridFragment;
 import com.example.android.app.popularmovies.fragmetns.MovieReviewFragment;
+import com.example.android.app.popularmovies.fragmetns.MovieTrailerFragment;
 //--------------------------------------------------------------------------------------------------
 /**
  * @Author Rupesh Padhye
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.movie_detail_activity, new MovieDetailFragment())
                         .add(R.id.movie_review, new MovieReviewFragment())
+                        .add(R.id.movie_trailer,new MovieTrailerFragment())
                         .commit();
             }
         }
@@ -62,10 +64,15 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
                                         findFragmentById(R.id.movie_detail_activity);
             MovieReviewFragment reviewFragment=(MovieReviewFragment)getSupportFragmentManager()
                                     .findFragmentById(R.id.movie_review);
-            if(fragment!=null && reviewFragment!=null) {
+            MovieTrailerFragment movieTrailerFragment=(MovieTrailerFragment)getSupportFragmentManager()
+                                    .findFragmentById(R.id.movie_trailer);
+
+           // if(fragment!=null && reviewFragment!=null) {
                 fragment.updateView(movieDetails);
                 reviewFragment.updateView(movieDetails);
-            }
+                movieTrailerFragment.updateView(movieDetails);
+
+            //}
         }
         else {
             Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class)

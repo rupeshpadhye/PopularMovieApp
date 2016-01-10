@@ -3,6 +3,7 @@ package com.example.android.app.popularmovies.fragmetns;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by RUPESH on 12/25/2015.
@@ -38,11 +40,18 @@ public class MovieTrailerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<MovieTrailer> movieTrailerList;
     private static final String LOG_TAG = MovieTrailerFragment.class.getSimpleName();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey("TRAILER_DATA")) {
+            movieTrailerList = savedInstanceState.getParcelableArrayList("TRAILER_DATA");
+        } else {
+            movieTrailerList = new ArrayList<>();
+        }
     }
 
 
@@ -54,35 +63,65 @@ public class MovieTrailerFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
             MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
-            progressBar = ((ProgressBar) rootView.findViewById(R.id.trailerProgessBar));
+            initUI(rootView);
+           /* progressBar = ((ProgressBar) rootView.findViewById(R.id.trailerProgessBar));
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.movieTrailerView);
             mRecyclerView.setHasFixedSize(true);
             mLayoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mAdapter = new MovieTrailerListAdapter(new ArrayList<MovieTrailer>());
+            // mAdapter = new MovieTrailerListAdapter(new ArrayList<MovieTrailer>());
+            mAdapter = new MovieTrailerListAdapter(movieTrailerList);
             mRecyclerView.setAdapter(mAdapter);
 
-            updateView(movieDetails);
             ((MovieTrailerListAdapter) mAdapter).setOnItemClickListener(new MovieTrailerListAdapter
                     .itemClickInterface() {
                 @Override
                 public void onClick(int pos, View view) {
-                    MovieTrailer trailer=((MovieTrailerListAdapter) mAdapter).getItem(pos);
-                    Log.d(LOG_TAG,"calling youtube intent");
+                    MovieTrailer trailer = ((MovieTrailerListAdapter) mAdapter).getItem(pos);
+                    Log.d(LOG_TAG, "calling youtube intent");
                     Intent intent = new Intent(Intent.ACTION_VIEW
-                            , Uri.parse("http://www.youtube.com/watch?v="+trailer.getKey()));
+                            , Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
                     startActivity(intent);
-
                 }
-            });
-
+            });*/
+            if (mAdapter.getItemCount() == 0) {
+                getTrailers(movieDetails);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
         }
         return rootView;
     }
 
+    public void initUI(View view) {
+        progressBar = ((ProgressBar) view.findViewById(R.id.trailerProgessBar));
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.movieTrailerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new MovieTrailerListAdapter(movieTrailerList);
+        mRecyclerView.setAdapter(mAdapter);
+
+        ((MovieTrailerListAdapter) mAdapter).setOnItemClickListener(new MovieTrailerListAdapter
+                .itemClickInterface() {
+            @Override
+            public void onClick(int pos, View view) {
+                MovieTrailer trailer = ((MovieTrailerListAdapter) mAdapter).getItem(pos);
+                Log.d(LOG_TAG, "calling youtube intent");
+                Intent intent = new Intent(Intent.ACTION_VIEW
+                        , Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+                startActivity(intent);
+            }
+        });
+    }
 
     public void updateView(MovieDetails movieDetails) {
+        initUI(getView());
+        getTrailers(movieDetails);
+    }
 
+    public void getTrailers(MovieDetails movieDetails) {
+        Log.d(LOG_TAG, "updateView MovieTrailerFragment callded");
         Uri builtUri = Uri.parse(PopularMovieConstants.BASE_URL)
                 .buildUpon()
                 .appendPath(PopularMovieConstants.MOVIE_APPENDER)
@@ -126,5 +165,13 @@ public class MovieTrailerFragment extends Fragment {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putParcelableArrayList("TRAILER_DATA"
+                , (ArrayList<? extends Parcelable>) ((MovieTrailerListAdapter) mAdapter).getGridData());
+
+        super.onSaveInstanceState(outState);
+    }
 
 }

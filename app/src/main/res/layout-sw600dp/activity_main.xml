@@ -1,58 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.example.android.app.popularmovies.MainActivity">
 
     <LinearLayout
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:divider="?android:attr/dividerHorizontal"
-        android:orientation="horizontal"
-        >
+        </android.support.design.widget.AppBarLayout>
 
-        <!--
-        This layout is a two-pane layout for the Items master/detail flow.
-        -->
-
-        <fragment
-            android:id="@+id/fragment_forecast"
-            android:name="com.example.android.app.popularmovies.fragmetns.MovieGridFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            tools:layout="@layout/movie_grid_fragment" />
-
-       <LinearLayout
-            android:layout_width="wrap_content"
-           android:layout_weight="1"
-            android:layout_height="match_parent"
-           >
-        <FrameLayout
-            android:id="@+id/movie_detail_activity"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           />
+            android:baselineAligned="false"
+            android:divider="?android:attr/dividerHorizontal"
+            android:orientation="horizontal">
+
+            <!--
+            This layout is a two-pane layout for the Items master/detail flow.
+            -->
+
+            <fragment
+                android:id="@+id/fragment_forecast"
+                android:name="com.example.android.app.popularmovies.fragmetns.MovieGridFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                tools:layout="@layout/movie_grid_fragment" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/movie_detail_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/movie_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="600dp"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/movie_trailer"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
 
     </LinearLayout>
-  </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -32,18 +32,19 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail_activity);
+
        /* if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_activity,new MovieDetailFragment())
                     .commit();
         }*/
-        if (savedInstanceState == null) {
+
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             setupViewPager(viewPager);
 
             tabLayout = (TabLayout) findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(viewPager);
-        }
+
     }
 
 
