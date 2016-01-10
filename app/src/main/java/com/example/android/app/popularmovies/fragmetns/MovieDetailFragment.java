@@ -3,6 +3,8 @@ package com.example.android.app.popularmovies.fragmetns;
 //--------------------------------------------------------------------------------------------------
 
 import android.content.Intent;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,6 +69,7 @@ public class MovieDetailFragment extends Fragment {
                     movieDetails.getOverview());
             ((TextView) rootView.findViewById(R.id.releaseDate)).setText(movieDetails.getRelease_date());
             ((TextView) rootView.findViewById(R.id.language)).setText(movieDetails.getOriginal_language());
+
             if (movieDetails.getPoster_path() != null && !movieDetails.getPoster_path().isEmpty()) {
                 Picasso.with(getContext())
                         .load(PopularMovieConstants.IMG_URL_W185 + movieDetails.getPoster_path())
@@ -79,16 +82,17 @@ public class MovieDetailFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-
+                    Log.d(LOG_TAG,"buttone cliecked");
                     Drawable drawable;
-                    if(isFavMovie(movieDetails)) {
-
-                        drawable= ContextCompat.getDrawable(getContext(), android.R.drawable.star_on);
+                    Toast.makeText(getContext(),"RUPEHS", Toast.LENGTH_SHORT).show();
+                   /* if(isFavMovie(movieDetails)) {
+                        Toast.makeText(getContext(),"Rupesh",Toast.LENGTH_SHORT);
+                        drawable=  ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
                     }
                     else{
-                        drawable= ContextCompat.getDrawable(getContext(), android.R.drawable.star_off);
-                    }
-                    favButton.setImageDrawable(drawable);
+                        drawable= ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
+                    }*/
+                   // favButton.setImageDrawable(drawable);
                 }
             });
         }
@@ -97,10 +101,14 @@ public class MovieDetailFragment extends Fragment {
 
     public boolean isFavMovie(MovieDetails movieDetails)
     {
-        return false;
+        return true;
     }
 
-    public void updateView(MovieDetails movieDetails) {
+    public void addToFav(View view)
+    {
+        Toast.makeText(getContext(),"Button Called", Toast.LENGTH_SHORT).show();
+    }
+    public void updateView(final MovieDetails movieDetails) {
         Log.d(LOG_TAG, movieDetails.toString());
         getView().setVisibility(View.VISIBLE);
         ((TextView) getView().findViewById(R.id.movieTitle)).setText(
@@ -120,6 +128,24 @@ public class MovieDetailFragment extends Fragment {
             ((ImageView) getView().findViewById(R.id.imageView))
                     .setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.no_image));
         }
+
+        favButton = (ImageButton) getView().findViewById(R.id.favButton);
+        favButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "buttone cliecked");
+                Drawable drawable;
+                    if(isFavMovie(movieDetails)) {
+                        Toast.makeText(getContext(),"Rupesh",Toast.LENGTH_SHORT).show();
+                        drawable=  ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
+                    }
+                    else{
+                        drawable= ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_outline);
+                    }
+                 favButton.setImageDrawable(drawable);
+            }
+        });
     }
 
 }

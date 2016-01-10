@@ -10,6 +10,5 @@
     <string name="default_sort_key" translatable="false">popularity.desc</string>
     <string name="default_page_key" translatable="false">1</string>
     <string name="fav_movies_menu">Favourite Movies</string>
-
-
+    <string name="action_share">Share</string>
 </resources>

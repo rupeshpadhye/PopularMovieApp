@@ -42,9 +42,10 @@
                 android:id="@+id/favButton"
                 android:paddingRight="10dp"
                 android:src="@drawable/ic_favorite_outline"
-
+                android:tint="@color/colorAccent"
                 />
 
+            <!--  -->
             </LinearLayout>
             <!--<View style="@style/Divider" />-->
             <LinearLayout

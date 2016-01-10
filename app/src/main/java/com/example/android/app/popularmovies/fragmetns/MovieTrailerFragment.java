@@ -5,10 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -42,17 +47,50 @@ public class MovieTrailerFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<MovieTrailer> movieTrailerList;
     private static final String LOG_TAG = MovieTrailerFragment.class.getSimpleName();
+    private ShareActionProvider mShareActionProvider;
+    private MovieTrailer mTrailerShare;
 
+    public MovieTrailerFragment() {
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.share_menu, menu);
+
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        if (mTrailerShare != null) {
+            mShareActionProvider.setShareIntent(createShareTrailerIntent());
+        }
+    }
+
+
+    public Intent createShareTrailerIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        String data="http://www.youtube.com/watch?v=" +mTrailerShare.getKey()+"#PopularMoviesTrailers-"+mTrailerShare.getName();
+        shareIntent.putExtra(Intent.EXTRA_TEXT, data);
+        return shareIntent;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.containsKey("TRAILER_DATA")) {
             movieTrailerList = savedInstanceState.getParcelableArrayList("TRAILER_DATA");
+            mTrailerShare=movieTrailerList.get(0);
         } else {
             movieTrailerList = new ArrayList<>();
         }
     }
+
 
 
     @Override
@@ -64,26 +102,7 @@ public class MovieTrailerFragment extends Fragment {
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
             MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
             initUI(rootView);
-           /* progressBar = ((ProgressBar) rootView.findViewById(R.id.trailerProgessBar));
-            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.movieTrailerView);
-            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            // mAdapter = new MovieTrailerListAdapter(new ArrayList<MovieTrailer>());
-            mAdapter = new MovieTrailerListAdapter(movieTrailerList);
-            mRecyclerView.setAdapter(mAdapter);
 
-            ((MovieTrailerListAdapter) mAdapter).setOnItemClickListener(new MovieTrailerListAdapter
-                    .itemClickInterface() {
-                @Override
-                public void onClick(int pos, View view) {
-                    MovieTrailer trailer = ((MovieTrailerListAdapter) mAdapter).getItem(pos);
-                    Log.d(LOG_TAG, "calling youtube intent");
-                    Intent intent = new Intent(Intent.ACTION_VIEW
-                            , Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
-                    startActivity(intent);
-                }
-            });*/
             if (mAdapter.getItemCount() == 0) {
                 getTrailers(movieDetails);
             } else {
@@ -155,6 +174,12 @@ public class MovieTrailerFragment extends Fragment {
                     @Override
                     public void run() {
                         ((MovieTrailerListAdapter) mAdapter).setGridData(trailersDTO.getResults());
+                        if(mAdapter.getItemCount() >0) {
+                            mTrailerShare = ((MovieTrailerListAdapter) mAdapter).getItem(0);
+                        }
+                        if (mShareActionProvider != null) {
+                            mShareActionProvider.setShareIntent(createShareTrailerIntent());
+                        }
                         progressBar.setVisibility(View.GONE);
                     }
 
