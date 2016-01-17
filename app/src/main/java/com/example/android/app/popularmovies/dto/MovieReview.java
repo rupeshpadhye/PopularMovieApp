@@ -17,8 +17,8 @@ public class MovieReview implements Parcelable {
     private  String author;
     private  String content;
 
-    public  MovieReview()
-    {}
+    public  MovieReview() {}
+
     public MovieReview(Parcel parcel) {
         id=parcel.readString();
         author=parcel.readString();

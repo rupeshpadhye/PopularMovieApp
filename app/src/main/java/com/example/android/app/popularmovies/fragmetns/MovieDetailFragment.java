@@ -24,8 +24,12 @@ import android.widget.Toast;
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
 import com.example.android.app.popularmovies.dto.MovieDetails;
+import com.example.android.app.popularmovies.helpers.DatabaseHelper;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 import com.squareup.picasso.Picasso;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 //--------------------------------------------------------------------------------------------------
 
@@ -36,17 +40,21 @@ import java.util.Calendar;
 public class MovieDetailFragment extends Fragment {
 
     private ImageButton favButton;
-
     private static String LOG_TAG = MovieDetailFragment.class.getSimpleName();
-
+    private Dao<MovieDetails, Integer> movieDetailsLongDAO;
 
     public MovieDetailFragment() {
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            movieDetailsLongDAO = OpenHelperManager.getHelper(getContext(),
+                    DatabaseHelper.class).getMovieDetailsDAO();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,94 +67,83 @@ public class MovieDetailFragment extends Fragment {
         }*/
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
-           final MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
-            Log.d(LOG_TAG, movieDetails.toString());
-            ((TextView) rootView.findViewById(R.id.movieTitle)).setText(
-                    movieDetails.getOriginal_title());
-            ((TextView) rootView.findViewById(R.id.rating)).setText(
-                    Float.toString(movieDetails.getVote_average()));
-            ((TextView) rootView.findViewById(R.id.description)).setText(
-                    movieDetails.getOverview());
-            ((TextView) rootView.findViewById(R.id.releaseDate)).setText(movieDetails.getRelease_date());
-            ((TextView) rootView.findViewById(R.id.language)).setText(movieDetails.getOriginal_language());
-
-            if (movieDetails.getPoster_path() != null && !movieDetails.getPoster_path().isEmpty()) {
-                Picasso.with(getContext())
-                        .load(PopularMovieConstants.IMG_URL_W185 + movieDetails.getPoster_path())
-                        .into(((ImageView) rootView.findViewById(R.id.imageView)));
-
-            }
-
-            favButton = (ImageButton) rootView.findViewById(R.id.favButton);
-            favButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Log.d(LOG_TAG,"buttone cliecked");
-                    Drawable drawable;
-                    Toast.makeText(getContext(),"RUPEHS", Toast.LENGTH_SHORT).show();
-                   /* if(isFavMovie(movieDetails)) {
-                        Toast.makeText(getContext(),"Rupesh",Toast.LENGTH_SHORT);
-                        drawable=  ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
-                    }
-                    else{
-                        drawable= ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
-                    }*/
-                   // favButton.setImageDrawable(drawable);
-                }
-            });
+            final MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
+            updateUI(movieDetails, rootView);
         }
         return rootView;
     }
 
-    public boolean isFavMovie(MovieDetails movieDetails)
-    {
-        return true;
+
+    public void updateView(final MovieDetails movieDetails) {
+        updateUI(movieDetails, getView());
     }
 
-    public void addToFav(View view)
-    {
-        Toast.makeText(getContext(),"Button Called", Toast.LENGTH_SHORT).show();
+    private boolean isFavMovie(MovieDetails movieDetails) {
+        boolean isFav = false;
+        try {
+            isFav = movieDetailsLongDAO.idExists(movieDetails.getId());
+            Log.d(LOG_TAG, "movie is fav" + isFav);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isFav;
     }
-    public void updateView(final MovieDetails movieDetails) {
+
+    private void updateUI(final MovieDetails movieDetails, View view) {
         Log.d(LOG_TAG, movieDetails.toString());
-        getView().setVisibility(View.VISIBLE);
-        ((TextView) getView().findViewById(R.id.movieTitle)).setText(
+        view.setVisibility(View.VISIBLE);
+        ((TextView) view.findViewById(R.id.movieTitle)).setText(
                 movieDetails.getOriginal_title());
-        ((TextView) getView().findViewById(R.id.rating)).setText(
+        ((TextView) view.findViewById(R.id.rating)).setText(
                 Float.toString(movieDetails.getVote_average()));
-        ((TextView) getView().findViewById(R.id.description)).setText(
+        ((TextView) view.findViewById(R.id.description)).setText(
                 movieDetails.getOverview());
-        ((TextView) getView().findViewById(R.id.releaseDate)).setText(movieDetails.getRelease_date());
-        ((TextView) getView().findViewById(R.id.language)).setText(movieDetails.getOriginal_language());
+        ((TextView) view.findViewById(R.id.releaseDate)).setText(movieDetails.getRelease_date());
+        ((TextView) view.findViewById(R.id.language)).setText(movieDetails.getOriginal_language());
         if (movieDetails.getPoster_path() != null && !movieDetails.getPoster_path().isEmpty()) {
             Picasso.with(getContext())
                     .load(PopularMovieConstants.IMG_URL_W185 + movieDetails.getPoster_path())
-                    .into(((ImageView) getView().findViewById(R.id.imageView)));
+                    .into(((ImageView) view.findViewById(R.id.imageView)));
 
         } else {
-            ((ImageView) getView().findViewById(R.id.imageView))
+            ((ImageView) view.findViewById(R.id.imageView))
                     .setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.no_image));
         }
 
-        favButton = (ImageButton) getView().findViewById(R.id.favButton);
+        favButton = (ImageButton) view.findViewById(R.id.favButton);
+        Drawable drawable;
+        if (isFavMovie(movieDetails)) {
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
+        }
+        else {
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_outline);
+        }
+
+        favButton.setImageDrawable(drawable);
         favButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(LOG_TAG, "buttone cliecked");
                 Drawable drawable;
-                    if(isFavMovie(movieDetails)) {
-                        Toast.makeText(getContext(),"Rupesh",Toast.LENGTH_SHORT).show();
-                        drawable=  ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
+                try {
+                    if (!isFavMovie(movieDetails)) {
+                        movieDetailsLongDAO.create(movieDetails);
+                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite);
+                        Log.d(LOG_TAG, "new row inserted");
+                    } else {
+                        movieDetailsLongDAO.deleteById(movieDetails.getId());
+                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_outline);
+                        Log.d(LOG_TAG, "movie deleted");
                     }
-                    else{
-                        drawable= ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_outline);
-                    }
-                 favButton.setImageDrawable(drawable);
+                    favButton.setImageDrawable(drawable);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Something Went wrong", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
+
 
 }
 //--------------------------------------------------------------------------------------------------

@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
@@ -13,23 +16,49 @@ import lombok.Data;
  */
 //--------------------------------------------------------------------------------------------------
 @Data
+@DatabaseTable(tableName = "MovieDetails")
 public class MovieDetails implements Parcelable {
 
     private boolean adult;
     private String backdrop_path;
     private List<Integer> genre_ids;
+
+    @DatabaseField(id = true)
     private int id;
+
+    @DatabaseField
     private String original_language;
+
+    @DatabaseField
     private String original_title;
+
+    @DatabaseField
     private String overview;
    // private Date release_date;
+
+    @DatabaseField
     private String release_date;
+
+    @DatabaseField
     private String poster_path;
     private double popularity;
+
+    @DatabaseField
     private String title;
+
+    @DatabaseField
     private boolean video;
+
+    @DatabaseField
     private float vote_average;
+
+    @DatabaseField
     private int vote_count;
+
+    public MovieDetails()
+    {
+
+    }
 
     private MovieDetails(Parcel parcel) {
         super();

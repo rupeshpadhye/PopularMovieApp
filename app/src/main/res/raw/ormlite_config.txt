@@ -1,0 +1,41 @@
+#
+# generated on 2016/01/16 10:35:05
+#
+# --table-start--
+dataClass=com.example.android.app.popularmovies.dto.MovieDetails
+tableName=MovieDetails
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=original_language
+# --field-end--
+# --field-start--
+fieldName=original_title
+# --field-end--
+# --field-start--
+fieldName=overview
+# --field-end--
+# --field-start--
+fieldName=release_date
+# --field-end--
+# --field-start--
+fieldName=poster_path
+# --field-end--
+# --field-start--
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=video
+# --field-end--
+# --field-start--
+fieldName=vote_average
+# --field-end--
+# --field-start--
+fieldName=vote_count
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

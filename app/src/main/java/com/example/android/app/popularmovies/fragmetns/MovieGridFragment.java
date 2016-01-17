@@ -27,11 +27,16 @@ import com.example.android.app.popularmovies.adapter.MovieGridViewAdapter;
 import com.example.android.app.popularmovies.constants.PopularMovieConstants;
 import com.example.android.app.popularmovies.dto.MovieDetails;
 import com.example.android.app.popularmovies.dto.MovieResultsDTO;
+import com.example.android.app.popularmovies.helpers.DatabaseHelper;
 import com.example.android.app.popularmovies.network.RemoteCaller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 //--------------------------------------------------------------------------------------------------
@@ -52,6 +57,7 @@ public class MovieGridFragment extends Fragment {
     private onMovieSelectedListener mMovieClickListener;
     private int mPosition = GridView.INVALID_POSITION;
     List<MovieDetails> mGridData;
+    private Dao<MovieDetails, Integer> movieDetailsDAO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,14 @@ public class MovieGridFragment extends Fragment {
             mMovieGridAdapter.setGridData(mGridData);
         }
 
+
+        try {
+            movieDetailsDAO = OpenHelperManager.getHelper(getContext(),
+                    DatabaseHelper.class).getMovieDetailsDAO();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         setHasOptionsMenu(true);
 
     }
@@ -94,15 +108,31 @@ public class MovieGridFragment extends Fragment {
                 sortOrder = PopularMovieConstants.VOTE_AVG_DESC;
                 break;
             case R.id.fav_movies_id:
-                Toast.makeText(getContext(),"Show Fav",Toast.LENGTH_SHORT);
+                sortOrder="FAVOURITE";
                 break;
         }
 
-        updatePreference(PopularMovieConstants.CURRENT_SORT_ORD, sortOrder);
-        PopularMovieTask popularMovieTask = new PopularMovieTask();
-        popularMovieTask.execute(sortOrder
-                , mPreferences.getString(
-                PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key)));
+        if("FAVOURITE".equals(sortOrder)) {
+            try{
+                Log.d(LOG_TAG,"fav order selected");
+                mGridData=movieDetailsDAO.queryForAll();
+                Log.d(LOG_TAG,mGridData.toString());
+                mMovieGridAdapter.setGridData(mGridData);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            updatePreference(PopularMovieConstants.CURRENT_SORT_ORD, sortOrder);
+            PopularMovieTask popularMovieTask = new PopularMovieTask();
+            popularMovieTask.execute(sortOrder
+                    , mPreferences.getString(
+                    PopularMovieConstants.CURRENT_PAGE, getString(R.string.default_page_key)));
+        }
+
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -163,16 +193,6 @@ public class MovieGridFragment extends Fragment {
 
         super.onSaveInstanceState(outState);
     }
-
-
-    /*@Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState!=null && savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
-            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
-        }
-    }*/
-
 
     public void updatePreference(String key, String sortOrder) {
         mPreferences.edit().clear().putString(key, sortOrder).commit();
