@@ -45,6 +45,8 @@ public final class PopularMovieConstants {
     public static final String VIDEOS ="videos" ;
 
     public static final String REVIEW_DATA ="REVIEW_DATA" ;
+
+    public static final String FAV_MOVIES ="FAVOURITE" ;
 }
 //--------------------------------------------------------------------------------------------------
 //

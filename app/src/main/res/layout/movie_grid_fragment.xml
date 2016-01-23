@@ -12,7 +12,7 @@
         android:gravity="center"
         android:stretchMode="columnWidth"
         android:id="@+id/movieGridView"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:horizontalSpacing="0dp"
         android:verticalSpacing="0dp"
         android:fillViewport="true"

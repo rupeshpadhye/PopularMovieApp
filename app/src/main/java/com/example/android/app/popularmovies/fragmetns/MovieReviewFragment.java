@@ -60,6 +60,11 @@ public class MovieReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_review, container, false);
+
+        boolean dualPane = getResources().getBoolean(R.bool.dual_pane);
+        if (dualPane) {
+            rootView.setVisibility(View.INVISIBLE);
+        }
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
             MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
@@ -94,6 +99,7 @@ public class MovieReviewFragment extends Fragment {
 
     public void updateView(MovieDetails MovieDetails) {
         //initUI(getView());
+        getView().setVisibility(View.VISIBLE);
         progressBar=(ProgressBar)getView().findViewById(R.id.reviewProgessBar);
         mRecyclerView=(RecyclerView) getView().findViewById(R.id.MovieReviewView);
         mRecyclerView.setHasFixedSize(true);

@@ -58,11 +58,7 @@ public class MovieTrailerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.share_menu, menu);
-
-        // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
-
-        // Get the provider and hold onto it to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         if (mTrailerShare != null) {
@@ -98,6 +94,10 @@ public class MovieTrailerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.movie_trailer, container, false);
+        boolean dualPane = getResources().getBoolean(R.bool.dual_pane);
+        if (dualPane) {
+            rootView.setVisibility(View.INVISIBLE);
+        }
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(PopularMovieConstants.MOVIE_DATA)) {
             MovieDetails movieDetails = intent.getParcelableExtra(PopularMovieConstants.MOVIE_DATA);
@@ -135,6 +135,7 @@ public class MovieTrailerFragment extends Fragment {
     }
 
     public void updateView(MovieDetails movieDetails) {
+        getView().setVisibility(View.VISIBLE);
         initUI(getView());
         getTrailers(movieDetails);
     }
