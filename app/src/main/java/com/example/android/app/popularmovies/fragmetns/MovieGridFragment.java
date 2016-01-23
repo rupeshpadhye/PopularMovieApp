@@ -162,14 +162,12 @@ public class MovieGridFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieDetails movieDetails = mMovieGridAdapter.getItem(position);
                 mPosition = position;
-                Log.d(LOG_TAG, "new " + mPosition);
                 mMovieClickListener.onMovieSelected(movieDetails);
 
             }
         });
 
         if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.SCROLL_POSITION)) {
-            Log.d(LOG_TAG, "retrieved" + mPosition);
             mPosition = savedInstanceState.getInt(PopularMovieConstants.SCROLL_POSITION);
         }
 
@@ -190,7 +188,7 @@ public class MovieGridFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    public void updatePreference(String key, String sortOrder) {
+    private void updatePreference(String key, String sortOrder) {
         mPreferences.edit().clear().putString(key, sortOrder).commit();
     }
 
