@@ -122,6 +122,7 @@ public class MovieGridFragment extends Fragment {
                 Log.d(LOG_TAG, "fav order selected");
                 mGridData = movieDetailsDAO.queryForAll();
                 mMovieGridAdapter.setGridData(mGridData);
+                setScreenTextInvisible();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -253,14 +254,14 @@ public class MovieGridFragment extends Fragment {
     }
 
     private void setScreenTextVisible() {
-       // getView().findViewById(R.id.status).setVisibility(View.VISIBLE);
+        //getView().findViewById(R.id.status).setVisibility(View.VISIBLE);
         //getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         mTextView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void setScreenTextInvisible() {
-        //getView().findViewById(R.id.status).setVisibility(View.INVISIBLE);
+       // getView().findViewById(R.id.status).setVisibility(View.INVISIBLE);
         //getView().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
         mTextView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
