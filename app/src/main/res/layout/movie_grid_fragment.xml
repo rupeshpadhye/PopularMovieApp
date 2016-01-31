@@ -18,31 +18,41 @@
         android:fillViewport="true"
         />
 
-    <TextView
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Loading"
-        android:id="@+id/status"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/progressBar"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/status_margin_bottom"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_25dp"
         android:visibility="visible"
         />
 
-    <ProgressBar
+    <!-- <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textAppearance="?android:attr/textAppearanceMedium"
+         android:text="Loading"
+         android:id="@+id/status"
+         android:layout_gravity="center_horizontal|bottom"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:layout_marginBottom="@dimen/status_margin_bottom"
+         android:textColor="@color/colorPrimary"
+         android:textSize="@dimen/text_25dp"
+         android:visibility="invisible"
+         />
+ -->
+    <!--<ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_above="@+id/status"
+        android:layout_above="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/progress_margin_bottom"
         android:indeterminate="false"
-        android:visibility="visible"
-        />
+        android:visibility="invisible"
+        />-->
 </RelativeLayout>
 

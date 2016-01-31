@@ -17,4 +17,6 @@ Screen Shots
 
 ![Movie Detail](documents/movie_detail.PNG)
 
+![Movie  Trailers](documents/trailers.PNG)
+
 ![Tablet](documents/tablet.PNG)

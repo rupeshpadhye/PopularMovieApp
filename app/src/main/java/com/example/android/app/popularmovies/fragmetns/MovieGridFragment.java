@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.android.app.popularmovies.BuildConfig;
 import com.example.android.app.popularmovies.R;
 import com.example.android.app.popularmovies.adapter.MovieGridViewAdapter;
@@ -34,7 +32,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -52,12 +49,13 @@ public class MovieGridFragment extends Fragment {
     private static String LOG_TAG = MovieGridFragment.class.getSimpleName();
     private MovieGridViewAdapter mMovieGridAdapter;
     private SharedPreferences mPreferences;
-    private TextView mTextView;
+    // private TextView mTextView;
     private GridView mGridView;
     private ProgressBar mProgressBar;
     private onMovieSelectedListener mMovieClickListener;
     private int mPosition = GridView.INVALID_POSITION;
-    List<MovieDetails> mGridData = new ArrayList<>();;
+    List<MovieDetails> mGridData = new ArrayList<>();
+    ;
     private Dao<MovieDetails, Integer> movieDetailsDAO;
 
     @Override
@@ -74,15 +72,6 @@ public class MovieGridFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
-            Log.d(LOG_TAG, "savedInstanceState is null" + savedInstanceState);
-            populateMovies();
-
-        } else {
-            Log.d(LOG_TAG, "savedInstanceState is not null");
-            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
-            mMovieGridAdapter.setGridData(mGridData);
-        }
         setHasOptionsMenu(true);
     }
 
@@ -122,11 +111,12 @@ public class MovieGridFragment extends Fragment {
                 Log.d(LOG_TAG, "fav order selected");
                 mGridData = movieDetailsDAO.queryForAll();
                 mMovieGridAdapter.setGridData(mGridData);
-                setScreenTextInvisible();
+                // setScreenTextInvisible();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
+            // setScreenTextVisible();
             PopularMovieTask popularMovieTask = new PopularMovieTask();
             popularMovieTask.execute(sortOrder
                     , mPreferences.getString(
@@ -150,13 +140,23 @@ public class MovieGridFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_grid_fragment, container, false);
         mGridView = (GridView) rootView.findViewById(R.id.movieGridView);
-        mTextView = (TextView) rootView.findViewById(R.id.status);
+        //  mTextView = (TextView) rootView.findViewById(R.id.status);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mGridView.setAdapter(mMovieGridAdapter);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
-            setScreenTextInvisible();
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey(PopularMovieConstants.MOVIE_DATA)) {
+            Log.d(LOG_TAG, "savedInstanceState is null" + savedInstanceState);
+            //
+            populateMovies();
+
+        } else {
+            Log.d(LOG_TAG, "savedInstanceState is not null");
+            mGridData = savedInstanceState.getParcelableArrayList(PopularMovieConstants.MOVIE_DATA);
+            mMovieGridAdapter.setGridData(mGridData);
         }
+
+
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -167,6 +167,7 @@ public class MovieGridFragment extends Fragment {
 
             }
         });
+
 
         if (savedInstanceState != null && savedInstanceState.containsKey(PopularMovieConstants.SCROLL_POSITION)) {
             mPosition = savedInstanceState.getInt(PopularMovieConstants.SCROLL_POSITION);
@@ -182,10 +183,11 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(PopularMovieConstants.MOVIE_DATA
-                , (ArrayList<? extends Parcelable>) mMovieGridAdapter.getGridData());
-        outState.putInt(PopularMovieConstants.SCROLL_POSITION, mPosition);
-
+        if (mMovieGridAdapter.getCount() > 0) {
+            outState.putParcelableArrayList(PopularMovieConstants.MOVIE_DATA
+                    , (ArrayList<? extends Parcelable>) mMovieGridAdapter.getGridData());
+            outState.putInt(PopularMovieConstants.SCROLL_POSITION, mPosition);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -196,6 +198,7 @@ public class MovieGridFragment extends Fragment {
     private class PopularMovieTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
+            setScreenTextVisible();
 
         }
 
@@ -234,13 +237,14 @@ public class MovieGridFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+
+            setScreenTextInvisible();
             if (result == null) {
-                setScreenTextVisible();
-                mTextView.setText(PopularMovieConstants.NO_INTERNET);
+                Snackbar.make(getView(), PopularMovieConstants.NO_INTERNET, Snackbar.LENGTH_LONG)
+                        .setAction(PopularMovieConstants.RETRY, new RetryNetworkCall()).show();
                 return;
             }
 
-            setScreenTextInvisible();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-DD").create();
             MovieResultsDTO resultsDTO = gson.fromJson(result, MovieResultsDTO.class);
             Log.d(LOG_TAG, resultsDTO.toString());
@@ -253,17 +257,22 @@ public class MovieGridFragment extends Fragment {
 
     }
 
+    private final class RetryNetworkCall implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Log.d(LOG_TAG, "retry network");
+            populateMovies();
+        }
+    }
+
     private void setScreenTextVisible() {
-        //getView().findViewById(R.id.status).setVisibility(View.VISIBLE);
-        //getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        mTextView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
+        mGridView.setVisibility(View.INVISIBLE);
     }
 
     private void setScreenTextInvisible() {
-       // getView().findViewById(R.id.status).setVisibility(View.INVISIBLE);
-        //getView().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-        mTextView.setVisibility(View.INVISIBLE);
+        mGridView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 

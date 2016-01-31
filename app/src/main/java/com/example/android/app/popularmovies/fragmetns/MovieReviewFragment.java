@@ -160,8 +160,11 @@ public class MovieReviewFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("REVIEW_DATA"
-                , (ArrayList<? extends Parcelable>) ((MovieReviewListAdapter) mAdapter).getGridData());
+
+        if(mAdapter.getItemCount()>0) {
+            outState.putParcelableArrayList("REVIEW_DATA"
+                    , (ArrayList<? extends Parcelable>) ((MovieReviewListAdapter) mAdapter).getGridData());
+        }
         super.onSaveInstanceState(outState);
     }
 

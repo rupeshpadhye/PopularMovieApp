@@ -194,9 +194,11 @@ public class MovieTrailerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList("TRAILER_DATA"
-                , (ArrayList<? extends Parcelable>) ((MovieTrailerListAdapter) mAdapter).getGridData());
+        if(mAdapter.getItemCount()>0) {
+            outState.putParcelableArrayList("TRAILER_DATA"
+                    , (ArrayList<? extends Parcelable>) ((MovieTrailerListAdapter) mAdapter).getGridData());
 
+        }
         super.onSaveInstanceState(outState);
     }
 

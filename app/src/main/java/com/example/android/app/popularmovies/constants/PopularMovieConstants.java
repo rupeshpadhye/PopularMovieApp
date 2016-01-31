@@ -32,7 +32,7 @@ public final class PopularMovieConstants {
 
     public static final String IMG_URL_W185 ="http://image.tmdb.org/t/p/w185";
 
-    public static final String NO_INTERNET="No Internet";
+    public static final String NO_INTERNET=" No internet Connection";
 
     public static final String POPULARITY_DESC="popularity.desc";
 
@@ -47,6 +47,8 @@ public final class PopularMovieConstants {
     public static final String REVIEW_DATA ="REVIEW_DATA" ;
 
     public static final String FAV_MOVIES ="FAVOURITE" ;
+
+    public static  final  String RETRY="Retry";
 }
 //--------------------------------------------------------------------------------------------------
 //
