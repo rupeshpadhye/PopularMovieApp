@@ -2,7 +2,7 @@ Popular Movie App
 ============================
 
 - To fetch popular movies, you will use the API from themoviedb.org.
-If you don�t already have an account, you will need to create one in order to request an API Key
+If you do not have an account, create one in order to request an API Key
 - **Update MOVIE_APP_KEY** with API Key prior building project
 
 > buildTypes.all { variant ->
@@ -20,3 +20,10 @@ Screen Shots
 ![Movie  Trailers](documents/trailers.PNG)
 
 ![Tablet](documents/tablet.PNG)
+
+######External Libraries used
+- picasso
+- OkHttp
+- ormlite
+- lombok
+- gson
