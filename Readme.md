@@ -1,4 +1,4 @@
-Popular Movie App(Project-1)
+Popular Movie App
 ============================
 
 - To fetch popular movies, you will use the API from themoviedb.org.
