@@ -17,10 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.all { variant ->
-        variant.buildConfigField "String", "THE_MOVIE_DB_API_KEY",
-                '"c21c91dfc933b188c0a5647fbe9876e2"'
-    }
+
+    buildTypes.all { variant -> variant.buildConfigField "String", "THE_MOVIE_DB_API_KEY", '"MOVIE_APP_KEY"' }
+
 
 }
 
@@ -36,4 +35,7 @@ dependencies {
     provided 'org.projectlombok:lombok:1.14.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+
 }
