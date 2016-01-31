@@ -7,7 +7,7 @@ If you do not have an account, create one in order to request an API Key
 
 > buildTypes.all { variant ->
         variant.buildConfigField "String", "THE_MOVIE_DB_API_KEY",
-                **'"MOVIE_APP_KEY"'**
+                '"**MOVIE_APP_KEY**"'
     }
 
 Screen Shots
